@@ -1,6 +1,7 @@
 # Copies the portfolio sites from their source repos into this Pages repo.
 #   tpm-portfolio: index.html, app.js, styles.css  -> tpm/
 #   fde-portfolio: site/                           -> fde/
+#   arch-portfolio: site/                          -> arch/
 # Runs hourly, on demand (Actions tab -> Run workflow), and immediately when a
 # source repo sends a "portfolio-updated" repository_dispatch event.
 name: Sync portfolios
@@ -39,10 +40,17 @@ jobs:
           ref: main
           path: _src/fde
 
+      - name: Check out arch-portfolio
+        uses: actions/checkout@v4
+        with:
+          repository: blpatnaik31/arch-portfolio
+          ref: main
+          path: _src/arch
+
       - name: Copy site files
         run: |
           set -euo pipefail
-          mkdir -p tpm fde
+          mkdir -p tpm fde arch
           for f in index.html app.js styles.css; do
             cp "_src/tpm/$f" "tpm/$f"
           done
@@ -51,12 +59,17 @@ jobs:
           else
             echo "fde-portfolio has no site/ folder yet; leaving fde/ unchanged"
           fi
+          if [ -d _src/arch/site ]; then
+            rsync -a --delete --exclude '.*' _src/arch/site/ arch/
+          else
+            echo "arch-portfolio has no site/ folder yet; leaving arch/ unchanged"
+          fi
           rm -rf _src
 
       - name: Commit and push if changed
         run: |
           set -euo pipefail
-          git add -A tpm fde
+          git add -A tpm fde arch
           if git diff --cached --quiet; then
             echo "Live site already matches the source repos."
             exit 0

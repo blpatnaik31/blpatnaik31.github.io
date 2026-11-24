@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#0b1518" />
-    <meta name="description" content="Portfolios of Lokapati Bhogela: technical program delivery and forward-deployed engineering." />
+    <meta name="description" content="Portfolios of Lokapati Bhogela: technical program delivery, forward-deployed engineering, and solution &amp; AI product architecture." />
     <title>Lokapati Bhogela — Portfolios</title>
     <link rel="stylesheet" href="tpm/styles.css" />
     <style>
@@ -13,6 +13,12 @@
       .chooser .work-grid { margin-top: 2.5rem; }
       .chooser .work-card.fde { background: linear-gradient(160deg, #1b2032, #161a28); }
       .chooser .work-card.fde .card-index, .chooser .work-card.fde strong { color: #a9a4ff; }
+      .chooser .work-card.arch { background: linear-gradient(160deg, #221e17, #1c1914); }
+      .chooser .work-card.arch .card-index, .chooser .work-card.arch strong { color: #f2b978; }
+      .chooser .work-grid { grid-template-columns: repeat(3, 1fr); }
+      .chooser-route { margin-top: 1.5rem; color: var(--ink-muted); font-size: 0.95rem; }
+      .chooser-route strong { color: var(--ink); }
+      @media (max-width: 960px) { .chooser .work-grid { grid-template-columns: 1fr; } }
       .chooser-links { margin-top: 2.5rem; display: flex; gap: 1.5rem; flex-wrap: wrap; color: var(--ink-muted); font-size: 0.9rem; }
     </style>
   </head>
@@ -20,7 +26,7 @@
     <main class="chooser">
       <div class="container">
         <span class="eyebrow">Lokapati Bhogela</span>
-        <h1>Two portfolios, one <em>throughline</em>.</h1>
+        <h1>Three lenses, one <em>throughline</em>.</h1>
         <p class="lede">13+ years in healthcare IT, medical devices, and enterprise delivery. Pick the lens that fits the role.</p>
         <div class="work-grid">
           <a class="work-card" href="tpm/">
@@ -43,7 +49,18 @@
               <p class="card-result"><strong>Runnable builds, honest evals</strong>Human-gated triage agents, a healthcare prior-auth RAG system with a real eval harness, and a live personal finance automation stack.</p>
             </div>
           </a>
+          <a class="work-card arch" href="arch/">
+            <div class="card-top">
+              <span class="card-index">Portfolio 03</span>
+              <h3>Solution &amp; AI Product Architecture</h3>
+              <span class="card-company">Case studies · Decision records · Principles</span>
+            </div>
+            <div class="card-bottom">
+              <p class="card-result"><strong>8 workers · 2 passes · human-gated</strong>Governed multi-agent repair, handoff contracts, metrics design, and reusable channel onboarding for an AI-driven catalog and marketplace platform.</p>
+            </div>
+          </a>
         </div>
+        <p class="chooser-route">Hiring for <strong>TPM / Program Manager</strong> → 01 · <strong>FDE / AI engineer</strong> → 02 · <strong>Solution Architect / Technical PM / PO</strong> → 03</p>
         <div class="chooser-links">
           <a href="mailto:blpatnaik31@gmail.com">Email</a>
           <a href="https://linkedin.com/in/lbhogela" target="_blank" rel="noreferrer">LinkedIn ↗</a>
