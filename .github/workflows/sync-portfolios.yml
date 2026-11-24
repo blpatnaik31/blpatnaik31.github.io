@@ -1,0 +1,67 @@
+# Copies the portfolio sites from their source repos into this Pages repo.
+#   tpm-portfolio: index.html, app.js, styles.css  -> tpm/
+#   fde-portfolio: site/                           -> fde/
+# Runs hourly, on demand (Actions tab -> Run workflow), and immediately when a
+# source repo sends a "portfolio-updated" repository_dispatch event.
+name: Sync portfolios
+
+on:
+  schedule:
+    - cron: "23 * * * *"
+  workflow_dispatch:
+  repository_dispatch:
+    types: [portfolio-updated]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-portfolios
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check out tpm-portfolio
+        uses: actions/checkout@v4
+        with:
+          repository: blpatnaik31/tpm-portfolio
+          ref: main
+          path: _src/tpm
+
+      - name: Check out fde-portfolio
+        uses: actions/checkout@v4
+        with:
+          repository: blpatnaik31/fde-portfolio
+          ref: main
+          path: _src/fde
+
+      - name: Copy site files
+        run: |
+          set -euo pipefail
+          mkdir -p tpm fde
+          for f in index.html app.js styles.css; do
+            cp "_src/tpm/$f" "tpm/$f"
+          done
+          if [ -d _src/fde/site ]; then
+            rsync -a --delete --exclude '.*' _src/fde/site/ fde/
+          else
+            echo "fde-portfolio has no site/ folder yet; leaving fde/ unchanged"
+          fi
+          rm -rf _src
+
+      - name: Commit and push if changed
+        run: |
+          set -euo pipefail
+          git add -A tpm fde
+          if git diff --cached --quiet; then
+            echo "Live site already matches the source repos."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Sync portfolios from source repos"
+          git push
